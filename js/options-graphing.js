@@ -76,9 +76,8 @@ function drawDataAsOne(numPoints) {
 	var dataArray = new Array();
 	for (var i = 0; i <= numPoints; i+=INCREMENT) {
 		var payoff = 0;
-		payoff = i;
 		for (var k = 0; k < assets.length; k++) {
-			payoff = getDataPointValue(assets[k], payoff);
+			payoff += getDataPointValue(assets[k], i);
 		};
 		dataArray[j] = [i, payoff];
 		j++;
@@ -258,20 +257,25 @@ function addGraph() {
                 '</div>' + 
 
                 '<button onclick="addGraph()" class="btn btn-small btn-primary pull-right" style="margin-left: 15px;" type="button">Add Asset</button>' + 
-                //'<button id="removeGraph' + assetCount + '" class="btn btn-small btn-danger pull-right" type="button">Remove Asset</button>' + 
+                '<button id="removeGraph' + assetCount + '" class="btn btn-small btn-danger pull-right" type="button">Remove Asset</button>' + 
                 
               '</form>' + 
             '</div>'; 
 
+    // add the new HTML to the page
 	$("#asset-options").append(graphOptionsHTML);
 
-	// $("#removeGraph" + assetCount).click(function() {
-	// 	console.log(assetCount);
-	// 	$("#asset-options").children()[assetCount - 1].remove();
-	// 	assets.splice(assetCount, 1);
-	// 	drawAssetChart();
-	// 	assetCount--;
-	// });
+	$("#removeGraph" + assetCount).data('assetIndex', assetCount);
+	$("#removeGraph" + assetCount).click(function() {
+		index = $(this).data('assetIndex');
+		console.log(index);
+		$("#asset-options").children()[index].remove();
+		assets.splice(index, 1);
+		drawAssetChart();
+		for (var i = index; i < assetCount; i++) {
+			$("#removeGraph" + assetCount).data('assetIndex', i);
+		};
+	});
 
 	$("#positionSelect" + assetCount).data('assetIndex', assetCount);
 	$("#positionSelect" + assetCount).change(function() {
@@ -306,6 +310,7 @@ function addGraph() {
 	 return false;
 	});
 
+	// Add the new asset onto the array
 	assets.push(new Asset());
 	drawAssetChart();
 }
