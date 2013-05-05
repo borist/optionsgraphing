@@ -64,8 +64,8 @@
         margin-left: 0px;
       }
 
-      .asset-options {
-        
+      .asset-option {
+        margin-bottom: 75px;
       }
     </style>
     <link href="./css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -77,54 +77,56 @@
 
       <div class="masthead">
         <ul class="nav nav-pills pull-right">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="#">Home</a></li>
+          <li><a href="./comparison.html">Comparison</a></li>
+          <li><a href="mailto:borist@wharton.upenn.edu">Contact</a></li>
         </ul>
-        <h3>Options Graphing</h3>
+        <h2>Options Graphing</h2>
       </div>
 
       <hr>
 
       <div class="row-fluid">
         <div class="span8">
-          <div id="chart_div" style="width: 600px; height: 400px;"></div>      
+          <div id="chart_div" style="width: 90%; height: 400px;"></div>      
         </div>
         <div class="span4">
 
-          <div class="asset-options">
-            <form class="form-horizontal">
+          <div id="asset-options">
+            <div class="asset-option">
+              <form class="form-horizontal">
 
-              <div class="control-group">
-                <label class="control-label">Type of Graph:</label>
-                <div class="controls">
-                  <select class="span7" id="graphTypeSelect">
-                    <option value="callOption">Call Option</option>
-                    <option value="putOption">Put Option</option>
-                    <option value="underlyingAsset">Underlying Asset</option>
-                  </select>
+                <div class="control-group">
+                  <label class="control-label">Type of Asset:</label>
+                  <div class="controls">
+                    <select class="span7" id="graphTypeSelect">
+                      <option value="callOption">Call Option</option>
+                      <option value="putOption">Put Option</option>
+                      <option value="underlyingAsset">Underlying Asset</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
 
-              <div class="control-group">
-                <label class="control-label">Position in Asset:</label>
-                <div class="controls">
-                  <select class="span7" id="positionSelect">
-                    <option value="long">Long</option>
-                    <option value="short">Short</option>
-                  </select>
+                <div class="control-group">
+                  <label class="control-label">Position in Asset:</label>
+                  <div class="controls">
+                    <select class="span7" id="positionSelect">
+                      <option value="long">Long</option>
+                      <option value="short">Short</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
 
-              <div class="control-group">
-                <label class="control-label" for="inputStrike">Strike Price:</label>
-                <div class="controls">
-                  <input class="input-small" type="text" id="inputStrike" value=50>
+                <div class="control-group">
+                  <label class="control-label" for="inputStrike">Strike Price:</label>
+                  <div class="controls">
+                    <input class="input-small" type="text" id="inputStrike" value=30>
+                  </div>
                 </div>
-              </div>
 
-              <button class="btn btn-small btn-primary pull-right" type="button">Add Asset</button>
-            </form>
+                <button onclick="addGraph()" class="btn btn-small btn-primary pull-right" type="button">Add Asset</button>
+              </form>
+            </div>
           </div>
 
         </div>
@@ -133,7 +135,7 @@
       <hr>
 
       <div class="footer">
-        <p>&copy; Company 2013</p>
+        <p>Created by <a href="http://www.linkedin.com/in/btreskunov">Boris Treskunov</a></p>
       </div>
 
     </div> <!-- /container -->
