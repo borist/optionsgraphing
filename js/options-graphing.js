@@ -226,7 +226,7 @@ $("#inputStrike").keypress(function(e) {
 function addGraph() {
 	assetCount = assets.length;
 	graphOptionsHTML = '<div id="asset-option' + assetCount + '"class="asset-option"><hr>' +
-              '<form class="form-horizontal" id="form">' +
+              '<form class="form-horizontal" id="form' + assetCount + '">' +
 
                 '<div class="control-group">' +
                 ' <label class="control-label">Type of Asset:</label>' +
@@ -306,7 +306,7 @@ function addGraph() {
 		}
 	});
 
-	$('#form').submit(function () {
+	$("#form" + assetCount).submit(function () {
 	 return false;
 	});
 
