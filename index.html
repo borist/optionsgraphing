@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Options Graphs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Boris Treskunov">
+
+    <!-- Le styles -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 60px;
+      }
+
+      /* Custom container */
+      .container {
+        margin: 0 auto;
+        max-width: 1000px;
+      }
+      .container > hr {
+        margin: 60px 0;
+      }
+
+      /* Customize the navbar links to be fill the entire space of the .navbar */
+      .navbar .navbar-inner {
+        padding: 0;
+      }
+      .navbar .nav {
+        margin: 0;
+        display: table;
+        width: 100%;
+      }
+      .navbar .nav li {
+        display: table-cell;
+        width: 1%;
+        float: none;
+      }
+      .navbar .nav li a {
+        font-weight: bold;
+        text-align: center;
+        border-left: 1px solid rgba(255,255,255,.75);
+        border-right: 1px solid rgba(0,0,0,.1);
+      }
+      .navbar .nav li:first-child a {
+        border-left: 0;
+        border-radius: 3px 0 0 3px;
+      }
+      .navbar .nav li:last-child a {
+        border-right: 0;
+        border-radius: 0 3px 3px 0;
+      }
+
+      .form-horizontal .control-label {
+        text-align: left;
+        margin-right: 10px;
+        width: 120px;
+      }
+
+      .form-horizontal .controls {
+        margin-left: 0px;
+      }
+
+      .asset-option {
+        margin-bottom: 75px;
+      }
+    </style>
+    <link href="./css/bootstrap-responsive.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#aboutModal" role="button" data-toggle="modal">About</a></li>
+          <!-- <li><a href="./comparison.html">Comparison</a></li> -->
+          <li><a href="mailto:borist@wharton.upenn.edu">Contact</a></li>
+        </ul>
+        <h2>Financial Options Graphing</h2>
+      </div>
+
+      <!-- About screen modal -->
+      <div id="aboutModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModalLabel">About</h3>
+        </div>
+        <div class="modal-body">
+          <p>This is a utility for graphing the payoff's of financial options at maturity. You can learn more about financial
+          options <a href="http://www.investopedia.com/terms/o/option.asp">here</a>. </p>
+          <hr>
+          <p>To graph an asset:</p>
+            <ul>
+              <li>Choose the type of asset from the dropdown menu on the right-hand side.</li>
+              <li>Choose your position in the asset.</li>
+              <li>Choose a strike price on the asset (does not apply if graphing the underlying asset).</li>
+            </ul>
+            To add an asset to the graph, simply hit "Add Asset" and follow the steps above to graph the asset. 
+
+          <hr>
+          <p>Toggling Combined Graphing:</p>
+          <p>You have the option of....</p>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="row-fluid">
+        <div class="span8">
+          <div id="chart_div" style="width: 90%; height: 400px;"></div>      
+        </div>
+        <div class="span4">
+            <button id="combinedPayoffButton" type="button" class="btn btn-primary pull-right" data-toggle="button">Show Combined Payoff</button> <br/><br/><br/>
+          <div id="asset-options">
+
+            <div class="asset-option">
+              <form class="form-horizontal">
+
+                <div class="control-group">
+                  <label class="control-label">Type of Asset:</label>
+                  <div class="controls">
+                    <select class="span7" id="graphTypeSelect">
+                      <option value="callOption">Call Option</option>
+                      <option value="putOption">Put Option</option>
+                      <option value="underlyingAsset">Underlying Asset</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Position in Asset:</label>
+                  <div class="controls">
+                    <select class="span7" id="positionSelect">
+                      <option value="long">Long</option>
+                      <option value="short">Short</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="inputStrike">Strike Price:</label>
+                  <div class="controls">
+                    <input class="input-small" type="text" id="inputStrike" value=30>
+                  </div>
+                </div>
+
+                <button onclick="addGraph()" class="btn btn-small btn-primary pull-right" type="button">Add Asset</button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="footer">
+        <p>Created by <a href="http://www.linkedin.com/in/btreskunov">Boris Treskunov</a></p>
+      </div>
+
+    </div> <!-- /container -->
+
+    <!-- Javascript placed at the end of the document so the pages load faster -->
+    <script src="./js/jquery.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="./js/options-graphing.js"></script>
+    <script>
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        assets.push(new Asset());
+        drawAssetChart(document.getElementById('chart_div'));
+      }
+
+      $(function() {
+        $("form").submit(function() { return false; });
+      });
+  </script>
+  </body>
+</html>
