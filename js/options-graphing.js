@@ -224,7 +224,15 @@ $("#positionSelect").change(function() {
 });
 
 $("#graphTypeSelect").change(function() {
-	assets[0].graphType = $("#graphTypeSelect").val();
+	var graphType = $("#graphTypeSelect").val();
+	assets[0].graphType = graphType;
+	if (graphType === "underlyingAsset") {
+		$("#inputPrice").val(25);
+		assets[0].price = 25;
+	} else {
+		$("#inputPrice").val(2.50);
+		assets[0].price = 2.50;
+	}
 	drawAssetChart();
 });
 
@@ -304,12 +312,11 @@ function addGraph() {
 	$("#removeGraph" + assetCount).data('assetIndex', assetCount);
 	$("#removeGraph" + assetCount).click(function() {
 		index = $(this).data('assetIndex');
-		console.log(index);
 		$("#asset-options").children()[index].remove();
 		assets.splice(index, 1);
 		drawAssetChart();
-		for (var i = index; i < assetCount; i++) {
-			$("#removeGraph" + assetCount).data('assetIndex', i);
+		for (var i = index + 1; i < assetCount + index; i++) {
+			$("#removeGraph" + i).data('assetIndex', $("#removeGraph" + i).data('assetIndex') - 1);
 		};
 	});
 
@@ -323,7 +330,15 @@ function addGraph() {
 	$("#graphTypeSelect" + assetCount).data('assetIndex', assetCount);
 	$("#graphTypeSelect" + assetCount).change(function() {
 		index = $(this).data('assetIndex');
-		assets[index].graphType = $("#graphTypeSelect" + index).val();
+		var graphType = $("#graphTypeSelect" + index).val();
+		assets[index].graphType = graphType;
+		if (graphType === "underlyingAsset") {
+			$("#inputPrice" + index).val(25);
+			assets[index].price = 25;
+		} else {
+			$("#inputPrice" + index).val(2.50);
+			assets[index].price = 2.50;
+		}	
 		drawAssetChart();
 	});
 
