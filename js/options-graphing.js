@@ -8,7 +8,7 @@ var SCALE = 2;
 var assets = new Array();
 var graphCanvas;
 var priceAsOne = false;
-var showProfit = false;
+var showProfit = true;
 
 function Asset() {
 	this.graphType = "callOption";
