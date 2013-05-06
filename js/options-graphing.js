@@ -310,7 +310,7 @@ function addGraph() {
 	 return false;
 	});
 
-	// Add the new asset onto the array
+	// Push the new asset onto the array
 	assets.push(new Asset());
 	drawAssetChart();
 }
