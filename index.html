@@ -95,7 +95,7 @@
           <p>This is a utility for graphing the payoff's of financial options at maturity. You can learn more about financial
           options <a href="http://www.investopedia.com/terms/o/option.asp">here</a>. </p>
           <hr>
-          <p>To graph an asset:</p>
+          <b><p>To graph an asset:</p></b>
             <ul>
               <li>Choose the type of asset from the dropdown menu on the right-hand side.</li>
               <li>Choose your position in the asset.</li>
@@ -104,8 +104,12 @@
             To add an asset to the graph, simply hit "Add Asset" and follow the steps above to graph the asset. 
 
           <hr>
-          <p>Toggling Combined Graphing:</p>
+          <b><p>Toggling Combined Graphing:</p></b>
           <p>When displaying multiple assets and/or options, you have the option of displaying the graphs of their payoffs seperately or combined into one line. Simply press the "Show Combined Payoff" bottom at the top right of the screen to toggle this option.</p>
+
+          <hr>
+          <b><p>Toggling Payoff/Profit:</p></b>
+          <p>You have the option of displaying either the asset(s) payoff or profit at maturity. To toggle between the two, simply select the desired option from the buttons above the graph. For simplicity, the discount rate is assumed to be 0 (i.e. the price of the asset is the same at the time of purchase and the time of maturity).</p>
 
         </div>
         <div class="modal-footer">
@@ -117,6 +121,10 @@
 
       <div class="row-fluid">
         <div class="span8">
+          <div class="btn-group" data-toggle="buttons-radio">
+            <button id="payoffToggle" type="button" class="btn btn-primary active">Payoff</button>
+            <button id="profitToggle" type="button" class="btn btn-primary">Profit</button>
+          </div>
           <div id="chart_div" style="width: 90%; height: 400px;"></div>      
         </div>
         <div class="span4">
@@ -150,7 +158,14 @@
                 <div class="control-group">
                   <label class="control-label" for="inputStrike">Strike Price:</label>
                   <div class="controls">
-                    <input class="input-small" type="text" id="inputStrike" value=30>
+                    <input class="input-mini" type="text" id="inputStrike" value=30>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="inputPrice">Option/Spot Price:</label>
+                  <div class="controls">
+                    <input class="input-mini" type="text" id="inputPrice" value=2.50>
                   </div>
                 </div>
 
