@@ -8,15 +8,27 @@ var SCALE = 2;
 var assets = new Array();
 var graphCanvas;
 var priceAsOne = false;
+var showProfit = false;
 
 function Asset() {
 	this.graphType = "callOption";
 	this.positionType = "long";
 	this.strikePrice = 30;
+	this.price = 2.5;
 }
 
 $("#combinedPayoffButton").click(function() {
 	priceAsOne = !priceAsOne;
+	drawAssetChart();
+});
+
+$("#payoffToggle").click(function() {
+	showProfit = false;
+	drawAssetChart();
+});
+
+$("#profitToggle").click(function() {
+	showProfit = true;
 	drawAssetChart();
 });
 
@@ -34,7 +46,6 @@ function drawAssetChart(graphCanvas) {
 	  vAxis: {
 	  	title: 'Payoff',
 	  	viewWindowMode: 'explicit',
-	  	// change this to alter dynamically
 	  	viewWindow: {min: -1*windowSize, max: windowSize}
 	  }
 	};
@@ -89,24 +100,25 @@ function drawDataAsOne(numPoints) {
 
 function getDataPointValue(asset, base) {
 	var strikePrice = asset.strikePrice;
+	var price = (showProfit) ? asset.price: 0;
 	switch(asset.graphType) {
 		case "callOption":
 			if (asset.positionType === "long") {
-				return Math.max(0, base - strikePrice);
+				return parseFloat(Math.max(0, base - strikePrice) - price);
 			} else {
-				return Math.min(0, strikePrice - base);
+				return parseFloat(Math.min(0, strikePrice - base) + price);
 			}
 		case "putOption":
 			if (asset.positionType === "long") {
-				return Math.max(0, strikePrice - base);
+				return parseFloat(Math.max(0, strikePrice - base) - price);
 			} else {
-				return Math.min(0, base - strikePrice);
+				return parseFloat(Math.min(0, base - strikePrice) + price);
 			}
 		case "underlyingAsset":
 			if (asset.positionType === "long") {
-				return base;
+				return base - price;
 			} else {
-				return -1*base;
+				return -1*base + price;
 			}
 	}
 }
@@ -114,47 +126,29 @@ function getDataPointValue(asset, base) {
 function getDataForAsset(asset, numPoints) {
 	switch(asset.graphType) {
 		case "callOption":
-			return drawCall(asset.positionType, asset.strikePrice, numPoints);
+			return drawCall(asset.positionType, asset.strikePrice, asset.price, numPoints);
 		case "putOption":
-			return drawPut(asset.positionType, asset.strikePrice, numPoints);
+			return drawPut(asset.positionType, asset.strikePrice, asset.price, numPoints);
 		case "underlyingAsset":
-			return drawUnderlying(asset.positionType, asset.strikePrice, numPoints);
+			return drawUnderlying(asset.positionType, asset.strikePrice, asset.price, numPoints);
 	}
 }
 
-function drawCall(positionType, strikePrice, numPoints) {
-	dataRows = new Array();
+function drawCall(positionType, strikePrice, assetPrice, numPoints) {
+	var dataRows = new Array();
+	var price = (showProfit) ? assetPrice: 0;
 	var j = 0;
 	switch(positionType) {
 		case "long":
 			for (var i = 0; i <= numPoints; i+=INCREMENT) {
-			  dataRows[j] = [i, Math.max(0, i - strikePrice)];
+			  dataRows[j] = [i, parseFloat(Math.max(0, i - strikePrice) - price)];
 			  j++;
 			};
 			break;
 		case "short":
+			console.log(price);
 			for (var i = 0; i <= numPoints; i+=INCREMENT) {
-			  dataRows[j] = [i, Math.min(0, strikePrice - i)];
-			  j++;
-			};
-			break;
-	}
-	return dataRows;
-}
-
-function drawPut(positionType, strikePrice, numPoints) {
-	dataRows = new Array();
-	var j = 0;
-	switch(positionType) {
-		case "long":
-			for (var i = 0; i <= numPoints; i+=INCREMENT) {
-			  dataRows[j] = [i, Math.max(0, strikePrice - i)];
-			  j++;
-			};
-			break;
-		case "short":
-			for (var i = 0; i <= numPoints; i+=INCREMENT) {
-			  dataRows[j] = [i, Math.min(0, i - strikePrice)];
+			  dataRows[j] = [i, parseFloat(Math.min(0, strikePrice - i) + price)];
 			  j++;
 			};
 			break;
@@ -162,19 +156,41 @@ function drawPut(positionType, strikePrice, numPoints) {
 	return dataRows;
 }
 
-function drawUnderlying(positionType, strikePrice, numPoints) {
-	dataRows = new Array();
+function drawPut(positionType, strikePrice, assetPrice, numPoints) {
+	var dataRows = new Array();
+	var price = (showProfit) ? assetPrice: 0;
 	var j = 0;
 	switch(positionType) {
 		case "long":
 			for (var i = 0; i <= numPoints; i+=INCREMENT) {
-			  dataRows[j] = [i, i];
+			  dataRows[j] = [i, parseFloat(Math.max(0, strikePrice - i) - price)];
 			  j++;
 			};
 			break;
 		case "short":
 			for (var i = 0; i <= numPoints; i+=INCREMENT) {
-			  dataRows[j] = [i, -1*i];
+			  dataRows[j] = [i, parseFloat(Math.min(0, i - strikePrice) + price)];
+			  j++;
+			};
+			break;
+	}
+	return dataRows;
+}
+
+function drawUnderlying(positionType, strikePrice, assetPrice, numPoints) {
+	var dataRows = new Array();
+	var price = (showProfit) ? assetPrice: 0;
+	var j = 0;
+	switch(positionType) {
+		case "long":
+			for (var i = 0; i <= numPoints; i+=INCREMENT) {
+			  dataRows[j] = [i, i - price];
+			  j++;
+			};
+			break;
+		case "short":
+			for (var i = 0; i <= numPoints; i+=INCREMENT) {
+			  dataRows[j] = [i, -1*i + price];
 			  j++;
 			};
 			break;
@@ -201,6 +217,7 @@ function getMaxStrike(assets) {
 	return maxStrike;
 }
 
+// Handle changes to asset parameters
 $("#positionSelect").change(function() {
 	assets[0].positionType = $("#positionSelect").val().toLowerCase();
 	drawAssetChart();
@@ -223,10 +240,22 @@ $("#inputStrike").keypress(function(e) {
 	}
 });
 
+$("#inputPrice").blur(function() {
+	assets[0].price = parseFloat($("#inputPrice").val());
+	drawAssetChart();
+});
+
+$("#inputPrice").keypress(function(e) {
+	if (e.keyCode == 13) {
+		assets[0].price = parseFloat($("#inputPrice").val());
+		drawAssetChart();
+	}
+});
+
 function addGraph() {
 	assetCount = assets.length;
 	graphOptionsHTML = '<div id="asset-option' + assetCount + '"class="asset-option"><hr>' +
-              '<form class="form-horizontal" id="form">' +
+              '<form class="form-horizontal" id="form' + assetCount + '">' +
 
                 '<div class="control-group">' +
                 ' <label class="control-label">Type of Asset:</label>' +
@@ -252,7 +281,14 @@ function addGraph() {
                 '<div class="control-group">' + 
                 '  <label class="control-label" for="inputStrike">Strike Price:</label>' + 
                 '  <div class="controls">' + 
-                '   <input class="input-small" type="text" id="inputStrike' + assetCount + '" value=30>' + 
+                '   <input class="input-mini" type="text" id="inputStrike' + assetCount + '" value=30>' + 
+                '  </div>' + 
+                '</div>' + 
+
+                '<div class="control-group">' + 
+                '  <label class="control-label" for="inputPrice">Option/Spot Price:</label>' + 
+                '  <div class="controls">' + 
+                '    <input class="input-mini" type="text" id="inputPrice' + assetCount + '" value=2.50>' + 
                 '  </div>' + 
                 '</div>' + 
 
@@ -306,11 +342,26 @@ function addGraph() {
 		}
 	});
 
-	$('#form').submit(function () {
+	$("#inputPrice" + assetCount).data('assetIndex', assetCount);
+	$("#inputPrice" + assetCount).blur(function() {
+		index = $(this).data('assetIndex');
+		assets[index].price = parseFloat($("#inputPrice" + assetCount).val());
+		drawAssetChart();
+	});
+
+	$("#inputPrice"  + assetCount).keypress(function(e) {
+		if (e.keyCode == 13) {
+			index = $(this).data('assetIndex');
+			assets[index].price = parseFloat($("#inputPrice" + assetCount).val());
+			drawAssetChart();
+		}
+	});
+
+	$("#form" + assetCount).submit(function () {
 	 return false;
 	});
 
-	// Push the new asset onto the array
+	// Add the new asset onto the array
 	assets.push(new Asset());
 	drawAssetChart();
 }
