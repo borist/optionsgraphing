@@ -325,6 +325,7 @@ function addGraph() {
                 '      <option value="callOption">Call Option</option>' +
                 '      <option value="putOption">Put Option</option>' +
                 '      <option value="underlyingAsset">Underlying Asset</option>' +
+                '	   <option value="cash">Cash</option>' +
                 '    </select>' + 
                 '  </div>' + 
                 '</div>' + 
@@ -333,23 +334,23 @@ function addGraph() {
                 '  <label class="control-label">Position in Asset:</label>' + 
                 '  <div class="controls">' + 
                 '    <select class="span7" id="positionSelect' + assetCount + '">' + 
-                '      <option value="long">Long</option>' + 
-                '      <option value="short">Short</option>' + 
+                '      <option value="long">Long (Invest)</option>' + 
+                '      <option value="short">Short (Borrow)</option>' + 
                 '    </select>' + 
                 '  </div>' + 
                 '</div>' + 
 
                 '<div class="control-group">' + 
-                '  <label class="control-label" for="inputStrike">Strike Price:</label>' + 
+                '  <label id="price-label' + assetCount + '" class="control-label" for="inputPrice">Option/Spot Price:</label>' + 
                 '  <div class="controls">' + 
-                '   <input class="input-mini" type="text" id="inputStrike' + assetCount + '" value=30>' + 
+                '    <input class="input-mini" type="text" id="inputPrice' + assetCount + '" value=2.50>' + 
                 '  </div>' + 
                 '</div>' + 
 
                 '<div class="control-group">' + 
-                '  <label class="control-label" for="inputPrice">Option/Spot Price:</label>' + 
+                '  <label id="strike-label' + assetCount + '" class="control-label" for="inputStrike">Strike Price:</label>' + 
                 '  <div class="controls">' + 
-                '    <input class="input-mini" type="text" id="inputPrice' + assetCount + '" value=2.50>' + 
+                '   <input class="input-mini" type="text" id="inputStrike' + assetCount + '" value=30>' + 
                 '  </div>' + 
                 '</div>' + 
 
@@ -385,13 +386,37 @@ function addGraph() {
 		index = $(this).data('assetIndex');
 		var graphType = $("#graphTypeSelect" + index).val();
 		assets[index].graphType = graphType;
-		if (graphType === "underlyingAsset") {
-			$("#inputPrice" + index).val(25);
-			assets[index].price = 25;
-		} else {
+
+		switch (graphType) {
+		case "callOption": 
+			$("#price-label" + index).html("Option Price:");
+			$("#strike-label" + index).removeClass("hidden");
+			$("#inputStrike" + index).removeClass("hidden");
 			$("#inputPrice" + index).val(2.50);
 			assets[index].price = 2.50;
-		}	
+			break;
+		case "putOption": 
+			$("#price-label" + index).html("Option Price:");
+			$("#strike-label" + index).removeClass("hidden");
+			$("#inputStrike" + index).removeClass("hidden");
+			$("#inputPrice" + index).val(2.50);
+			assets[index].price = 2.50;
+			break;
+		case "underlyingAsset": 
+			$("#price-label" + index).html("Spot Price:");
+			$("#strike-label" + index).addClass("hidden");
+			$("#inputStrike" + index).addClass("hidden");
+			$("#inputPrice" + index).val(25);
+			assets[index].price = 25;			
+			break;
+		case "cash":
+			$("#price-label" + index).html("Present Value of:");
+			$("#strike-label" + index).addClass("hidden");
+			$("#inputStrike" + index).addClass("hidden");
+			$("#inputPrice" + index).val(30);
+			assets[index].price = 30;	
+			break;
+	}
 		drawAssetChart();
 	});
 
