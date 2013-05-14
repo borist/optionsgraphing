@@ -261,6 +261,9 @@ $("#graphTypeSelect").change(function() {
 			$("#price-label").html("Option Price:");
 			$("#strike-label").removeClass("hidden");
 			$("#inputStrike").removeClass("hidden");
+			$("#positionSelect").html(
+					'<option value="long">Long</option>' + 
+					'<option value="short">Short</option>');
 			$("#inputPrice").val(2.50);
 			assets[0].price = 2.50;
 			break;
@@ -268,6 +271,9 @@ $("#graphTypeSelect").change(function() {
 			$("#price-label").html("Option Price:");
 			$("#strike-label").removeClass("hidden");
 			$("#inputStrike").removeClass("hidden");
+			$("#positionSelect").html(
+					'<option value="long">Long</option>' + 
+					'<option value="short">Short</option>');
 			$("#inputPrice").val(2.50);
 			assets[0].price = 2.50;
 			break;
@@ -275,6 +281,9 @@ $("#graphTypeSelect").change(function() {
 			$("#price-label").html("Spot Price:");
 			$("#strike-label").addClass("hidden");
 			$("#inputStrike").addClass("hidden");
+			$("#positionSelect").html(
+					'<option value="long">Long</option>' + 
+					'<option value="short">Short</option>');
 			$("#inputPrice").val(25);
 			assets[0].price = 25;			
 			break;
@@ -282,6 +291,9 @@ $("#graphTypeSelect").change(function() {
 			$("#price-label").html("Present Value of:");
 			$("#strike-label").addClass("hidden");
 			$("#inputStrike").addClass("hidden");
+			$("#positionSelect").html(
+					'<option value="long">Invest</option>' + 
+					'<option value="short">Borrow</option>');
 			$("#inputPrice").val(30);
 			assets[0].price = 30;	
 			break;
@@ -334,8 +346,8 @@ function addGraph() {
                 '  <label class="control-label">Position in Asset:</label>' + 
                 '  <div class="controls">' + 
                 '    <select class="span7" id="positionSelect' + assetCount + '">' + 
-                '      <option value="long">Long (Invest)</option>' + 
-                '      <option value="short">Short (Borrow)</option>' + 
+                '      <option value="long">Long</option>' + 
+                '      <option value="short">Short</option>' + 
                 '    </select>' + 
                 '  </div>' + 
                 '</div>' + 
@@ -392,6 +404,9 @@ function addGraph() {
 			$("#price-label" + index).html("Option Price:");
 			$("#strike-label" + index).removeClass("hidden");
 			$("#inputStrike" + index).removeClass("hidden");
+			$("#positionSelect" + index).html(
+					'<option value="long">Long</option>' + 
+					'<option value="short">Short</option>');
 			$("#inputPrice" + index).val(2.50);
 			assets[index].price = 2.50;
 			break;
@@ -399,6 +414,9 @@ function addGraph() {
 			$("#price-label" + index).html("Option Price:");
 			$("#strike-label" + index).removeClass("hidden");
 			$("#inputStrike" + index).removeClass("hidden");
+			$("#positionSelect" + index).html(
+					'<option value="long">Long</option>' + 
+					'<option value="short">Short</option>');
 			$("#inputPrice" + index).val(2.50);
 			assets[index].price = 2.50;
 			break;
@@ -406,6 +424,9 @@ function addGraph() {
 			$("#price-label" + index).html("Spot Price:");
 			$("#strike-label" + index).addClass("hidden");
 			$("#inputStrike" + index).addClass("hidden");
+			$("#positionSelect" + index).html(
+					'<option value="long">Long</option>' + 
+					'<option value="short">Short</option>');
 			$("#inputPrice" + index).val(25);
 			assets[index].price = 25;			
 			break;
@@ -413,6 +434,9 @@ function addGraph() {
 			$("#price-label" + index).html("Present Value of:");
 			$("#strike-label" + index).addClass("hidden");
 			$("#inputStrike" + index).addClass("hidden");
+			$("#positionSelect" + index).html(
+					'<option value="long">Invest</option>' + 
+					'<option value="short">Borrow</option>');
 			$("#inputPrice" + index).val(30);
 			assets[index].price = 30;	
 			break;
