@@ -8,67 +8,9 @@
     <meta name="description" content="">
     <meta name="author" content="Boris Treskunov">
 
-    <!-- Le styles -->
     <link href="./css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 20px;
-        padding-bottom: 60px;
-      }
-
-      /* Custom container */
-      .container {
-        margin: 0 auto;
-        max-width: 1000px;
-      }
-      .container > hr {
-        margin: 60px 0;
-      }
-
-      /* Customize the navbar links to be fill the entire space of the .navbar */
-      .navbar .navbar-inner {
-        padding: 0;
-      }
-      .navbar .nav {
-        margin: 0;
-        display: table;
-        width: 100%;
-      }
-      .navbar .nav li {
-        display: table-cell;
-        width: 1%;
-        float: none;
-      }
-      .navbar .nav li a {
-        font-weight: bold;
-        text-align: center;
-        border-left: 1px solid rgba(255,255,255,.75);
-        border-right: 1px solid rgba(0,0,0,.1);
-      }
-      .navbar .nav li:first-child a {
-        border-left: 0;
-        border-radius: 3px 0 0 3px;
-      }
-      .navbar .nav li:last-child a {
-        border-right: 0;
-        border-radius: 0 3px 3px 0;
-      }
-
-      .form-horizontal .control-label {
-        text-align: left;
-        margin-right: 10px;
-        width: 120px;
-      }
-
-      .form-horizontal .controls {
-        margin-left: 0px;
-      }
-
-      .asset-option {
-        margin-bottom: 75px;
-      }
-    </style>
     <link href="./css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="./css/main.css" rel="stylesheet">
   </head>
 
   <body>
@@ -141,6 +83,7 @@
                       <option value="callOption">Call Option</option>
                       <option value="putOption">Put Option</option>
                       <option value="underlyingAsset">Underlying Asset</option>
+                      <option value="cash">Cash</option>
                     </select>
                   </div>
                 </div>
@@ -149,23 +92,23 @@
                   <label class="control-label">Position in Asset:</label>
                   <div class="controls">
                     <select class="span7" id="positionSelect">
-                      <option value="long">Long</option>
-                      <option value="short">Short</option>
+                      <option value="long">Long (Invest)</option>
+                      <option value="short">Short (Borrow)</option>
                     </select>
                   </div>
                 </div>
 
                 <div class="control-group">
-                  <label class="control-label" for="inputStrike">Strike Price:</label>
+                  <label id="price-label" class="control-label" for="inputPrice">Option Price:</label>
                   <div class="controls">
-                    <input class="input-mini" type="text" id="inputStrike" value=30>
+                    <input class="input-mini" type="text" id="inputPrice" value=2.50>
                   </div>
                 </div>
 
                 <div class="control-group">
-                  <label class="control-label" for="inputPrice">Option/Spot Price:</label>
+                  <label id="strike-label" class="control-label" for="inputStrike">Strike Price:</label>
                   <div class="controls">
-                    <input class="input-mini" type="text" id="inputPrice" value=2.50>
+                    <input class="input-mini" type="text" id="inputStrike" value=30>
                   </div>
                 </div>
 
